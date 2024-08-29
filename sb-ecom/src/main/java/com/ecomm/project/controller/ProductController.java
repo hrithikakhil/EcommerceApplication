@@ -2,7 +2,6 @@ package com.ecomm.project.controller;
 
 import com.ecomm.project.dtos.ProductDTO;
 import com.ecomm.project.dtos.ProductResponse;
-import com.ecomm.project.models.Product;
 import com.ecomm.project.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +18,9 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/admin/categories/{categoryId}/products")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody Product product, @PathVariable Long categoryId) {
-        ProductDTO productDto = productService.addProduct(product, categoryId);
-        return new ResponseEntity<>(productDto, HttpStatus.CREATED);
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDto, @PathVariable Long categoryId) {
+        ProductDTO savedProductDto = productService.addProduct(productDto, categoryId);
+        return new ResponseEntity<>(savedProductDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/public/products")
@@ -49,8 +48,14 @@ public class ProductController {
     }
 
     @PutMapping("/admin/products/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody Product product, @PathVariable Long productId) {
-        ProductDTO productDto = productService.updateProduct(product, productId);
-        return new ResponseEntity<>(productDto, HttpStatus.OK);
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDto, @PathVariable Long productId) {
+        ProductDTO savedProductDto = productService.updateProduct(productDto, productId);
+        return new ResponseEntity<>(savedProductDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/products/{productId}")
+    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long productId) {
+        ProductDTO productDTO = productService.deleteProduct(productId);
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 }

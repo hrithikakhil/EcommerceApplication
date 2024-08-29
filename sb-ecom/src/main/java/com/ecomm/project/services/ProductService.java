@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductService {
 
-     ProductDTO addProduct(Product product, Long CategoryId);
+     ProductDTO addProduct(ProductDTO productDTO, Long CategoryId);
 
      List<ProductDTO> getAllProducts();
 
@@ -15,5 +15,7 @@ public interface ProductService {
 
      List<ProductDTO> searchByKeyword(String keyword);
 
-     ProductDTO updateProduct(Product product, Long productId);
+     ProductDTO updateProduct(ProductDTO productDTO, Long productId);
+
+     ProductDTO deleteProduct(Long productId);
 }
