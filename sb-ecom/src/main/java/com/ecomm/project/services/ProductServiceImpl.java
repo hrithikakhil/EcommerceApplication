@@ -10,6 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
@@ -30,5 +33,41 @@ public class ProductServiceImpl implements ProductService{
         product.setSpecialPrice(specialPrice);
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductDTO.class);
+    }
+
+    @Override
+    public List<ProductDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductDTO> productDTOs = new ArrayList<>();
+        for(Product product : products) {
+           ProductDTO tempProductDto = modelMapper.map(product, ProductDTO.class);
+           productDTOs.add(tempProductDto);
+        }
+        return productDTOs;
+    }
+
+    @Override
+    public List<ProductDTO> searchByCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", categoryId));
+
+        List<Product> products = productRepository.findByCategoryOrderByPriceAsc(category);
+        List<ProductDTO> productDTOs = new ArrayList<>();
+        for(Product product : products) {
+            ProductDTO tempProductDto = modelMapper.map(product, ProductDTO.class);
+            productDTOs.add(tempProductDto);
+        }
+        return productDTOs;
+    }
+
+    @Override
+    public List<ProductDTO> searchByKeyword(String keyword) {
+        List<Product> products = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
+        List<ProductDTO> productDTOs = new ArrayList<>();
+        for(Product product : products) {
+            ProductDTO tempProductDto = modelMapper.map(product, ProductDTO.class);
+            productDTOs.add(tempProductDto);
+        }
+        return productDTOs;
     }
 }
