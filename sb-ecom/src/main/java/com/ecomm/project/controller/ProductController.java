@@ -45,6 +45,12 @@ public class ProductController {
         List<ProductDTO> allProductsByCategory = productService.searchByKeyword(keyword);
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(allProductsByCategory);
-        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+        return new ResponseEntity<>(productResponse, HttpStatus.FOUND);
+    }
+
+    @PutMapping("/admin/products/{productId}")
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody Product product, @PathVariable Long productId) {
+        ProductDTO productDto = productService.updateProduct(product, productId);
+        return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 }
