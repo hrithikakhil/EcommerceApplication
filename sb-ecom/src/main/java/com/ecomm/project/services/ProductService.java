@@ -1,21 +1,20 @@
 package com.ecomm.project.services;
 
 import com.ecomm.project.dtos.ProductDTO;
-import com.ecomm.project.models.Product;
+import com.ecomm.project.dtos.ProductResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface ProductService {
 
      ProductDTO addProduct(ProductDTO productDTO, Long CategoryId);
 
-     List<ProductDTO> getAllProducts();
+     ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
-     List<ProductDTO> searchByCategory(Long categoryId);
+     ProductResponse searchByCategory(Long categoryId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
-     List<ProductDTO> searchByKeyword(String keyword);
+     ProductResponse searchByKeyword(String keyword, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
      ProductDTO updateProduct(ProductDTO productDTO, Long productId);
 
